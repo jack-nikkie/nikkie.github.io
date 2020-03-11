@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.newblog.ga/"/>
-  <updated>2020-03-10T15:11:47.296Z</updated>
+  <updated>2020-03-11T07:09:23.779Z</updated>
   <id>http://blog.newblog.ga/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>用cloudflare worker搭建谷歌搜索镜像站点</title>
+    <link href="http://blog.newblog.ga/2020/03/11/cf%20worker/"/>
+    <id>http://blog.newblog.ga/2020/03/11/cf%20worker/</id>
+    <published>2020-03-11T06:50:00.000Z</published>
+    <updated>2020-03-11T07:09:23.779Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在 Cloudflare Workers部署一个 Worker 时，它会在30秒之内部署到 CF 的整个边缘网络，全世界100多个地点。<br>域中的每个请求都会由离用户更近地点的 Worker 来处理，基于此来实现代码的“随处运行”。<br>我们访问谷歌不太方便，也可以利用CF Workers，只要经过一番简单设置就可以访问谷歌了。</p><a id="more"></a><h2 id="一、准备工作"><a href="#一、准备工作" class="headerlink" title="一、准备工作"></a>一、准备工作</h2><p>注册Cloudflare账号（<a href="https://dash.cloudflare.com/sign-up）" target="_blank" rel="noopener">https://dash.cloudflare.com/sign-up）</a><br><img src="/img/311-0.png" alt=""></p><h2 id="二、开始部署"><a href="#二、开始部署" class="headerlink" title="二、开始部署"></a>二、开始部署</h2><p>1.登录Cloudflare，点击页面右侧的worker<br><img src="/img/311-1.png" alt=""></p><p>2.进去之后选择一个子域，然后点击set up<br><img src="/img/311-2.png" alt=""></p><p>3.选择Free这个计划，点击Continue with Free<br><img src="/img/311-3.png" alt=""></p><p>4.点击Create a Worker<br><img src="/img/311-4.png" alt=""></p><p>5.删除左侧原来的脚本，替换我为大家准备的，点击下面的Save and Deploy<br>code:<br>// 替换成你想镜像的站点<br>const upstream = ‘<a href="http://www.google.com.hk&#39;" target="_blank" rel="noopener">www.google.com.hk&#39;</a></p><p>// 如果那个站点有专门的移动适配站点，否则保持和上面一致<br>const upstream_mobile = ‘<a href="http://www.google.com.hk&#39;" target="_blank" rel="noopener">www.google.com.hk&#39;</a></p><p>// 你希望禁止哪些国家访问<br>const blocked_region = [‘KP’]</p><p>// 禁止自访问<br>const blocked_ip_address = [‘0.0.0.0’, ‘127.0.0.1’]</p><p>// 替换成你想镜像的站点<br>const replace_dict = {<br>    ‘$upstream’: ‘$custom_domain’,<br>    ‘//<a href="http://www.google.com.hk&#39;" target="_blank" rel="noopener">www.google.com.hk&#39;</a>: ‘’<br>}</p><p>//以下内容都不用动<br>addEventListener(‘fetch’, event =&gt; {<br>    event.respondWith(fetchAndApply(event.request));<br>})</p><p>async function fetchAndApply(request) {</p><pre><code>const region = request.headers.get(&apos;cf-ipcountry&apos;).toUpperCase();const ip_address = request.headers.get(&apos;cf-connecting-ip&apos;);const user_agent = request.headers.get(&apos;user-agent&apos;);let response = null;let url = new URL(request.url);let url_host = url.host;if (url.protocol == &apos;http:&apos;) {    url.protocol = &apos;https:&apos;    response = Response.redirect(url.href);    return response;}if (await device_status(user_agent)) {    upstream_domain = upstream} else {    upstream_domain = upstream_mobile}url.host = upstream_domain;if (blocked_region.includes(region)) {    response = new Response(&apos;Access denied: WorkersProxy is not available in your region yet.&apos;, {        status: 403    });} else if(blocked_ip_address.includes(ip_address)){    response = new Response(&apos;Access denied: Your IP address is blocked by WorkersProxy.&apos;, {        status: 403    });} else{    let method = request.method;    let request_headers = request.headers;    let new_request_headers = new Headers(request_headers);    new_request_headers.set(&apos;Host&apos;, upstream_domain);    new_request_headers.set(&apos;Referer&apos;, url.href);    let original_response = await fetch(url.href, {        method: method,        headers: new_request_headers    })    let original_response_clone = original_response.clone();    let original_text = null;    let response_headers = original_response.headers;    let new_response_headers = new Headers(response_headers);    let status = original_response.status;    new_response_headers.set(&apos;access-control-allow-origin&apos;, &apos;*&apos;);    new_response_headers.set(&apos;access-control-allow-credentials&apos;, true);    new_response_headers.delete(&apos;content-security-policy&apos;);    new_response_headers.delete(&apos;content-security-policy-report-only&apos;);    new_response_headers.delete(&apos;clear-site-data&apos;);    const content_type = new_response_headers.get(&apos;content-type&apos;);    if (content_type.includes(&apos;text/html&apos;) &amp;&amp; content_type.includes(&apos;UTF-8&apos;)) {        original_text = await replace_response_text(original_response_clone, upstream_domain, url_host);    } else {        original_text = original_response_clone.body    }    response = new Response(original_text, {        status,        headers: new_response_headers    })}return response;</code></pre><p>}</p><p>async function replace_response_text(response, upstream_domain, host_name) {<br>    let text = await response.text()</p><pre><code>var i, j;for (i in replace_dict) {    j = replace_dict[i]    if (i == &apos;$upstream&apos;) {        i = upstream_domain    } else if (i == &apos;$custom_domain&apos;) {        i = host_name    }    if (j == &apos;$upstream&apos;) {        j = upstream_domain    } else if (j == &apos;$custom_domain&apos;) {        j = host_name    }    let re = new RegExp(i, &apos;g&apos;)    text = text.replace(re, j);}return text;</code></pre><p>}</p><p>async function device_status (user_agent_info) {<br>    var agents = [“Android”, “iPhone”, “SymbianOS”, “Windows Phone”, “iPad”, “iPod”];<br>    var flag = true;<br>    for (var v = 0; v &lt; agents.length; v++) {<br>        if (user_agent_info.indexOf(agents[v]) &gt; 0) {<br>            flag = false;<br>            break;<br>        }<br>    }<br>    return flag;<br>}<br><img src="/img/311-5.png" alt=""></p><p>6.点击Preview，可以预览你刚刚搭建的谷歌镜像站<br><img src="/img/311-6.png" alt=""></p><p>此时，可以顺利使用Cloudflare Worker 给你生成的默认域名访问谷歌了！<br><img src="/img/311-7.png" alt=""></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;在 Cloudflare Workers部署一个 Worker 时，它会在30秒之内部署到 CF 的整个边缘网络，全世界100多个地点。&lt;br&gt;域中的每个请求都会由离用户更近地点的 Worker 来处理，基于此来实现代码的“随处运行”。&lt;br&gt;我们访问谷歌不太方便，也可以利用CF Workers，只要经过一番简单设置就可以访问谷歌了。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="随笔" scheme="http://blog.newblog.ga/categories/%E9%9A%8F%E7%AC%94/"/>
+    
+    
+      <category term="教程" scheme="http://blog.newblog.ga/tags/%E6%95%99%E7%A8%8B/"/>
+    
+      <category term="谷歌" scheme="http://blog.newblog.ga/tags/%E8%B0%B7%E6%AD%8C/"/>
+    
+  </entry>
   
   <entry>
     <title>第一次搭建博客心得</title>

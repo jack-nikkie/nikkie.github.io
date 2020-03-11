@@ -6,23 +6,31 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://blog.newblog.ga">
-  <title>nikkie&#39;s blog</title>
+  <title>用cloudflare worker搭建谷歌搜索镜像站点 | nikkie&#39;s blog</title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-    
-    <!-- <meta name="keywords" content="Love sharing">
-    <meta name="description" content="Things do get improved as time goes by."> -->
-  
-  <meta name="description" content="Things do get improved as time goes by.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="nikkie&#39;s blog">
-<meta property="og:url" content="http://blog.newblog.ga/index.html">
+  <meta name="description" content="前言在 Cloudflare Workers部署一个 Worker 时，它会在30秒之内部署到 CF 的整个边缘网络，全世界100多个地点。域中的每个请求都会由离用户更近地点的 Worker 来处理，基于此来实现代码的“随处运行”。我们访问谷歌不太方便，也可以利用CF Workers，只要经过一番简单设置就可以访问谷歌了。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用cloudflare worker搭建谷歌搜索镜像站点">
+<meta property="og:url" content="http://blog.newblog.ga/2020/03/11/cf%20worker/index.html">
 <meta property="og:site_name" content="nikkie&#39;s blog">
-<meta property="og:description" content="Things do get improved as time goes by.">
+<meta property="og:description" content="前言在 Cloudflare Workers部署一个 Worker 时，它会在30秒之内部署到 CF 的整个边缘网络，全世界100多个地点。域中的每个请求都会由离用户更近地点的 Worker 来处理，基于此来实现代码的“随处运行”。我们访问谷歌不太方便，也可以利用CF Workers，只要经过一番简单设置就可以访问谷歌了。">
+<meta property="og:image" content="http://blog.newblog.ga/img/311-0.png">
+<meta property="og:image" content="http://blog.newblog.ga/img/311-1.png">
+<meta property="og:image" content="http://blog.newblog.ga/img/311-2.png">
+<meta property="og:image" content="http://blog.newblog.ga/img/311-3.png">
+<meta property="og:image" content="http://blog.newblog.ga/img/311-4.png">
+<meta property="og:image" content="http://blog.newblog.ga/img/311-5.png">
+<meta property="og:image" content="http://blog.newblog.ga/img/311-6.png">
+<meta property="og:image" content="http://blog.newblog.ga/img/311-7.png">
+<meta property="article:published_time" content="2020-03-11T06:50:00.000Z">
+<meta property="article:modified_time" content="2020-03-11T07:09:23.779Z">
 <meta property="article:author" content="nikkie">
-<meta property="article:tag" content="Love sharing">
+<meta property="article:tag" content="教程">
+<meta property="article:tag" content="谷歌">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.newblog.ga/img/311-0.png">
   
     <link rel="alternative" href="/atom.xml" title="nikkie&#39;s blog" type="application/atom+xml">
   
@@ -222,32 +230,25 @@
               class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <script src="/lib/oauthcallback.browser.js"></script>
-  
-  <script>
-    Oauthcallback();
-  </script>
-
-
-  
-    <article id="post-cf worker" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+            <article id="post-cf worker" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
   
   
-    <h1 itemprop="name">
-	
-	  <a class="article-title" href="/2020/03/11/cf%20worker/" target="_blank">用cloudflare worker搭建谷歌搜索镜像站点</a>
-  
+    <h1 class="article-title" itemprop="name">
+      用cloudflare worker搭建谷歌搜索镜像站点
     </h1>
   
 
 
   
   
+        
+        <span id="busuanzi_container_page_pv" style='display:none' class="archive-article-date">
+              <i class="icon-smile icon"></i> 阅读数：<span id="busuanzi_value_page_pv"></span>次
+        </span>
+
 <a href="/2020/03/11/cf%20worker/" class="archive-article-date">
         <time datetime="2020-03-11T06:50:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-11</time>
 </a>
@@ -255,6 +256,27 @@
   
   
     
+<div style="margin-top:10px;">
+  <span class="post-time">
+    <span class="post-meta-item-icon">
+      <!-- fonts.scss -->
+      <!-- 百度字体平台:http://fontstore.baidu.com/static/editor/index.html -->
+      <i class="icon-statistics"></i>
+      <span class="post-meta-item-text"> 字数统计:</span>
+      <span class="post-count">722字</span>
+    </span>
+  </span>
+
+  <span class="post-time">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+      <i class="icon-book icon"></i>
+      <span class="post-meta-item-text"> 阅读时长≈</span>
+      <span class="post-count">3分</span>
+    </span>
+  </span>
+</div>
+
 
   
   </header>
@@ -262,13 +284,168 @@
   <div class="article-entry" itemprop="articleBody">
     
     <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在 Cloudflare Workers部署一个 Worker 时，它会在30秒之内部署到 CF 的整个边缘网络，全世界100多个地点。<br>域中的每个请求都会由离用户更近地点的 Worker 来处理，基于此来实现代码的“随处运行”。<br>我们访问谷歌不太方便，也可以利用CF Workers，只要经过一番简单设置就可以访问谷歌了。</p>
-    
-    <a class="article-more-a" href="/2020/03/11/cf%20worker/#more">more >></a>
-    
-    
+<a id="more"></a>
+
+<h2 id="一、准备工作"><a href="#一、准备工作" class="headerlink" title="一、准备工作"></a>一、准备工作</h2><p>注册Cloudflare账号（<a href="https://dash.cloudflare.com/sign-up）" target="_blank" rel="noopener">https://dash.cloudflare.com/sign-up）</a><br><img src="/img/311-0.png" alt=""></p>
+<h2 id="二、开始部署"><a href="#二、开始部署" class="headerlink" title="二、开始部署"></a>二、开始部署</h2><p>1.登录Cloudflare，点击页面右侧的worker<br><img src="/img/311-1.png" alt=""></p>
+<p>2.进去之后选择一个子域，然后点击set up<br><img src="/img/311-2.png" alt=""></p>
+<p>3.选择Free这个计划，点击Continue with Free<br><img src="/img/311-3.png" alt=""></p>
+<p>4.点击Create a Worker<br><img src="/img/311-4.png" alt=""></p>
+<p>5.删除左侧原来的脚本，替换我为大家准备的，点击下面的Save and Deploy<br>code:<br>// 替换成你想镜像的站点<br>const upstream = ‘<a href="http://www.google.com.hk&#39;" target="_blank" rel="noopener">www.google.com.hk&#39;</a></p>
+<p>// 如果那个站点有专门的移动适配站点，否则保持和上面一致<br>const upstream_mobile = ‘<a href="http://www.google.com.hk&#39;" target="_blank" rel="noopener">www.google.com.hk&#39;</a></p>
+<p>// 你希望禁止哪些国家访问<br>const blocked_region = [‘KP’]</p>
+<p>// 禁止自访问<br>const blocked_ip_address = [‘0.0.0.0’, ‘127.0.0.1’]</p>
+<p>// 替换成你想镜像的站点<br>const replace_dict = {<br>    ‘$upstream’: ‘$custom_domain’,<br>    ‘//<a href="http://www.google.com.hk&#39;" target="_blank" rel="noopener">www.google.com.hk&#39;</a>: ‘’<br>}</p>
+<p>//以下内容都不用动<br>addEventListener(‘fetch’, event =&gt; {<br>    event.respondWith(fetchAndApply(event.request));<br>})</p>
+<p>async function fetchAndApply(request) {</p>
+<pre><code>const region = request.headers.get(&apos;cf-ipcountry&apos;).toUpperCase();
+const ip_address = request.headers.get(&apos;cf-connecting-ip&apos;);
+const user_agent = request.headers.get(&apos;user-agent&apos;);
+
+let response = null;
+let url = new URL(request.url);
+let url_host = url.host;
+
+if (url.protocol == &apos;http:&apos;) {
+    url.protocol = &apos;https:&apos;
+    response = Response.redirect(url.href);
+    return response;
+}
+
+if (await device_status(user_agent)) {
+    upstream_domain = upstream
+} else {
+    upstream_domain = upstream_mobile
+}
+
+url.host = upstream_domain;
+
+if (blocked_region.includes(region)) {
+    response = new Response(&apos;Access denied: WorkersProxy is not available in your region yet.&apos;, {
+        status: 403
+    });
+} else if(blocked_ip_address.includes(ip_address)){
+    response = new Response(&apos;Access denied: Your IP address is blocked by WorkersProxy.&apos;, {
+        status: 403
+    });
+} else{
+    let method = request.method;
+    let request_headers = request.headers;
+    let new_request_headers = new Headers(request_headers);
+
+    new_request_headers.set(&apos;Host&apos;, upstream_domain);
+    new_request_headers.set(&apos;Referer&apos;, url.href);
+
+    let original_response = await fetch(url.href, {
+        method: method,
+        headers: new_request_headers
+    })
+
+    let original_response_clone = original_response.clone();
+    let original_text = null;
+    let response_headers = original_response.headers;
+    let new_response_headers = new Headers(response_headers);
+    let status = original_response.status;
+
+    new_response_headers.set(&apos;access-control-allow-origin&apos;, &apos;*&apos;);
+    new_response_headers.set(&apos;access-control-allow-credentials&apos;, true);
+    new_response_headers.delete(&apos;content-security-policy&apos;);
+    new_response_headers.delete(&apos;content-security-policy-report-only&apos;);
+    new_response_headers.delete(&apos;clear-site-data&apos;);
+
+    const content_type = new_response_headers.get(&apos;content-type&apos;);
+    if (content_type.includes(&apos;text/html&apos;) &amp;&amp; content_type.includes(&apos;UTF-8&apos;)) {
+        original_text = await replace_response_text(original_response_clone, upstream_domain, url_host);
+    } else {
+        original_text = original_response_clone.body
+    }
+
+    response = new Response(original_text, {
+        status,
+        headers: new_response_headers
+    })
+}
+return response;</code></pre><p>}</p>
+<p>async function replace_response_text(response, upstream_domain, host_name) {<br>    let text = await response.text()</p>
+<pre><code>var i, j;
+for (i in replace_dict) {
+    j = replace_dict[i]
+    if (i == &apos;$upstream&apos;) {
+        i = upstream_domain
+    } else if (i == &apos;$custom_domain&apos;) {
+        i = host_name
+    }
+
+    if (j == &apos;$upstream&apos;) {
+        j = upstream_domain
+    } else if (j == &apos;$custom_domain&apos;) {
+        j = host_name
+    }
+
+    let re = new RegExp(i, &apos;g&apos;)
+    text = text.replace(re, j);
+}
+return text;</code></pre><p>}</p>
+<p>async function device_status (user_agent_info) {<br>    var agents = [“Android”, “iPhone”, “SymbianOS”, “Windows Phone”, “iPad”, “iPod”];<br>    var flag = true;<br>    for (var v = 0; v &lt; agents.length; v++) {<br>        if (user_agent_info.indexOf(agents[v]) &gt; 0) {<br>            flag = false;<br>            break;<br>        }<br>    }<br>    return flag;<br>}<br><img src="/img/311-5.png" alt=""></p>
+<p>6.点击Preview，可以预览你刚刚搭建的谷歌镜像站<br><img src="/img/311-6.png" alt=""></p>
+<p>此时，可以顺利使用Cloudflare Worker 给你生成的默认域名访问谷歌了！<br><img src="/img/311-7.png" alt=""></p>
 
     
 
+    
+    <div class="page-reward">
+      <a href="javascript:void(0);" class="page-reward-btn tooltip-top" target="_self">
+        <div class="tooltip tooltip-east">
+          <span class="tooltip-item">
+            赏
+          </span>
+          <span class="tooltip-content">
+            <span class="tooltip-text">
+              <span class="tooltip-inner">
+                <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i
+                    class="icon icon-quo-right"></i></p>
+                <div class="reward-box">
+                  
+                  <div class="reward-box-item">
+                    <img class="reward-img" src="/img/alipay.jpg">
+                    <span class="reward-type">支付宝</span>
+                  </div>
+                  
+                  
+                  <div class="reward-box-item">
+                    <img class="reward-img" src="/img/weixin.png">
+                    <span class="reward-type">微信</span>
+                  </div>
+                  
+                </div>
+              </span>
+            </span>
+          </span>
+        </div>
+      </a>
+    </div>
+    
+
+    
+    <div class="declare"> 
+      <ul class="post-copyright">
+        <li>
+          <strong>本文作者：</strong>
+          nikkie
+        </li>
+        <li>
+          <strong>本文链接：</strong>
+          <a href="http://blog.newblog.ga/2020/03/11/cf worker/" title="用cloudflare worker搭建谷歌搜索镜像站点" target="_blank">http://blog.newblog.ga/2020/03/11/cf worker/</a>
+        </li>
+        
+        <li>
+          <strong>版权声明： </strong>
+          
+          本博客所有文章除特别声明外，均采用 <a href="https://github.com/JoeyBling/hexo-theme-yilia-plus/blob/master/LICENSE" rel="external nofollow" target="_blank">MIT</a> 许可协议。转载请注明出处！
+        </li>
+        
+      </ul>
+    </div>
     
 
   </div>
@@ -304,16 +481,76 @@
 
 
     
-    <p class="article-more-link">
-      <a class="article-more-a" href="/2020/03/11/cf%20worker/">展开全文 >></a>
-    </p>
+
     
+    
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <!-- <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a> -->
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+     <!-- <img src="//pan.baidu.com/share/qrcode?url=http://blog.newblog.ga/2020/03/11/cf%20worker/" alt="微信分享二维码"> -->
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
 
     
     <div class="clearfix"></div>
   </div>
   </div>
 </article>
+
+
+<nav id="article-nav">
+  
+  
+    <a href="/2020/03/10/Log1/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">第一次搭建博客心得</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -328,442 +565,67 @@
         </div>
         
         
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Log1" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-  
-  
-    <h1 itemprop="name">
-	
-	  <a class="article-title" href="/2020/03/10/Log1/" target="_blank">第一次搭建博客心得</a>
-  
-    </h1>
-  
-
-
-  
-  
-<a href="/2020/03/10/Log1/" class="archive-article-date">
-        <time datetime="2020-03-10T14:53:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-10</time>
-</a>
-
-  
-  
-    
-
-  
-  </header>
-  
-  <div class="article-entry" itemprop="articleBody">
-    
-    <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>第一次自己去尝试搭建一个自己的博客网站，来记录自己的点滴生活。<br>在搭建博客的这个过程中，快乐与痛苦并存着，我收获了很多，学会了如何写下自己的第一篇文章<br>虽然，排版、内容、逻辑都还不是很好，但是，我迈出了第一步，我相信，后面就很容易了</p>
-    
-    <a class="article-more-a" href="/2020/03/10/Log1/#more">more >></a>
-    
-    
-
-    
-
-    
-
-  </div>
-  <div class="article-info article-info-index">
-    
-    
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">心得</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">感受</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-    
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/随笔//" class="article-tag-list-link color3">随笔</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-    
-    <p class="article-more-link">
-      <a class="article-more-a" href="/2020/03/10/Log1/">展开全文 >></a>
-    </p>
-    
-
-    
-    <div class="clearfix"></div>
-  </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一、准备工作"><span class="toc-number">2.</span> <span class="toc-text">一、准备工作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、开始部署"><span class="toc-number">3.</span> <span class="toc-text">二、开始部署</span></a></li></ol>
+                    </div>
+                </span>
             </div>
         </div>
         
-        
     </div>
 </aside>
 
 
 
 
+
+<div id="SOHUCS" sid="cf worker" ></div> 
+<script charset="utf-8" type="text/javascript" src="//changyan.sohu.com/upload/changyan.js" ></script>
+<script type="text/javascript">
+    window.changyan.api.config({
+        appid: "true",
+        conf: "true"
+    });
+</script>
+</script>
+
+
+
+
+
+
+  <div id="giteement-ctn"></div>
   
-    <article id="post-NF" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
+    <link rel="stylesheet" href="/lib/default.css">
+    <script src="/lib/giteement.browser.js"></script>
   
-  
-    <h1 itemprop="name">
-	
-	  <a class="article-title" href="/2020/03/10/NF/" target="_blank">如何免费看奈菲？</a>
-  
-    </h1>
-  
+  <script>
+  <!-- id: "用cloudflare worker搭建谷歌搜索镜像站点" -->
+  var giteement = new Giteement({
+    id: '20200311145000',
+    owner: 'jack-nikkie',
+    repo: 'yilia-plus-demo',
+    backcall_uri: 'https://blog.newblog.ga',
+    oauth_uri: 'https://cors-anywhere.herokuapp.com/https://gitee.com/oauth/token',
+    oauth: {
+      client_id: '2ed7c02a7c4a65d43b1b9ff09dbcb7b9861a8c6cff49f8e04f17fa2a7ca3820d',
+      client_secret: '0d4e287c6a22e4b76db4919272f6def753b6722a4954ac28435da97fbeffdd35'
+    },
+  })
+  giteement.render('giteement-ctn')
+  </script>
 
 
-  
-  
-<a href="/2020/03/10/NF/" class="archive-article-date">
-        <time datetime="2020-03-10T10:53:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-10</time>
-</a>
 
-  
-  
-    
 
-  
-  </header>
-  
-  <div class="article-entry" itemprop="articleBody">
-    
-    <p>一、什么是奈菲<br>Netflix（/nɛtflɪks/，官方简体中文名：奈飞，繁体中文名：网飞）是起源于美国、在多国提供网络视频点播的OTT服务公司[7]，并同时在美国国内经营单一费率邮寄DVD出租服务，后者是使用回邮信封寄送DVD和Blu-ray出租光盘至消费者指定的收件地址。(来源于维基百科）</p>
-    
-    <a class="article-more-a" href="/2020/03/10/NF/#more">more >></a>
-    
-    
 
-    
 
-    
-
-  </div>
-  <div class="article-info article-info-index">
-    
-    
-    
-
-    
-    <p class="article-more-link">
-      <a class="article-more-a" href="/2020/03/10/NF/">展开全文 >></a>
-    </p>
-    
-
-    
-    <div class="clearfix"></div>
-  </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-hahahhaha" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-  
-  
-    <h1 itemprop="name">
-	
-	  <a class="article-title" href="/2020/03/08/hahahhaha/" target="_blank">hahahhaha</a>
-  
-    </h1>
-  
-
-
-  
-  
-<a href="/2020/03/08/hahahhaha/" class="archive-article-date">
-        <time datetime="2020-03-08T15:42:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-08</time>
-</a>
-
-  
-  
-    
-
-  
-  </header>
-  
-  <div class="article-entry" itemprop="articleBody">
-    
-    
-    
-
-    
-
-    
-
-  </div>
-  <div class="article-info article-info-index">
-    
-    
-    
-
-    
-    <p class="article-more-link">
-      <a class="article-more-a" href="/2020/03/08/hahahhaha/">展开全文 >></a>
-    </p>
-    
-
-    
-    <div class="clearfix"></div>
-  </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Test" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-  
-  
-    <h1 itemprop="name">
-	
-	  <a class="article-title" href="/2020/03/08/Test/" target="_blank">Test</a>
-  
-    </h1>
-  
-
-
-  
-  
-<a href="/2020/03/08/Test/" class="archive-article-date">
-        <time datetime="2020-03-08T05:49:48.492Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-08</time>
-</a>
-
-  
-  
-    
-
-  
-  </header>
-  
-  <div class="article-entry" itemprop="articleBody">
-    
-    <p>Welcome to my cozy cottage</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a><br>Welcome to my cozy cottage</p>
-
-    
-
-    
-
-    
-
-  </div>
-  <div class="article-info article-info-index">
-    
-    
-    
-
-    
-    <p class="article-more-link">
-      <a class="article-more-a" href="/2020/03/08/Test/">展开全文 >></a>
-    </p>
-    
-
-    
-    <div class="clearfix"></div>
-  </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-hello-world" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-  
-  
-    <h1 itemprop="name">
-	
-	  <a class="article-title" href="/2020/03/08/hello-world/" target="_blank">Hello World</a>
-  
-    </h1>
-  
-
-
-  
-  
-<a href="/2020/03/08/hello-world/" class="archive-article-date">
-        <time datetime="2020-03-08T03:31:01.279Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-08</time>
-</a>
-
-  
-  
-    
-
-  
-  </header>
-  
-  <div class="article-entry" itemprop="articleBody">
-    
-    <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-    
-
-    
-
-    
-
-  </div>
-  <div class="article-info article-info-index">
-    
-    
-    
-
-    
-    <p class="article-more-link">
-      <a class="article-more-a" href="/2020/03/08/hello-world/">展开全文 >></a>
-    </p>
-    
-
-    
-    <div class="clearfix"></div>
-  </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-  
 
 
           </div>
@@ -838,8 +700,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
