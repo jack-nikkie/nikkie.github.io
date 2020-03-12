@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://newblog.ga/"/>
-  <updated>2020-03-11T07:09:23.779Z</updated>
+  <updated>2020-03-12T03:15:39.634Z</updated>
   <id>http://newblog.ga/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>约定</title>
+    <link href="http://newblog.ga/2020/03/12/photoPostName/"/>
+    <id>http://newblog.ga/2020/03/12/photoPostName/</id>
+    <published>2020-03-12T02:34:36.428Z</published>
+    <updated>2020-03-12T03:15:39.634Z</updated>
+    
+    <content type="html"><![CDATA[<p>一无所有的人生如果只能拥有一件宝物的话，希望是与你的约定。<br><img src="/img/312-0.jpg" alt=""></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;一无所有的人生如果只能拥有一件宝物的话，希望是与你的约定。&lt;br&gt;&lt;img src=&quot;/img/312-0.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+      
+    
+    </summary>
+    
+    
+      <category term="随笔" scheme="http://newblog.ga/categories/%E9%9A%8F%E7%AC%94/"/>
+    
+    
+      <category term="心情" scheme="http://newblog.ga/tags/%E5%BF%83%E6%83%85/"/>
+    
+  </entry>
   
   <entry>
     <title>用cloudflare worker搭建谷歌搜索镜像站点</title>
