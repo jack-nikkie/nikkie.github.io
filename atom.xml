@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://nikkie.xyz/"/>
-  <updated>2020-03-12T13:40:55.999Z</updated>
+  <updated>2020-03-14T12:44:01.241Z</updated>
   <id>http://nikkie.xyz/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>利用码云实现高速克隆GitHub项目</title>
+    <link href="http://nikkie.xyz/2020/03/14/gitee/"/>
+    <id>http://nikkie.xyz/2020/03/14/gitee/</id>
+    <published>2020-03-14T12:32:00.000Z</published>
+    <updated>2020-03-14T12:44:01.241Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>基于国内访问GitHub速度很慢，在不扶强的情况下，可以利用码云转接GitHub的项目。</p><a id="more"></a><h2 id="一、什么是码云？"><a href="#一、什么是码云？" class="headerlink" title="一、什么是码云？"></a>一、什么是码云？</h2><p>码云(gitee.com)是OSCHINA.NET 推出的代码托管平台，支持Git 和SVN，提供免费的私有仓库托管。目前已有近400 万的开发者选择码云。</p><h2 id="二、准备工作"><a href="#二、准备工作" class="headerlink" title="二、准备工作"></a>二、准备工作</h2><p>1.打开码云官网申请注册一个新账户( <a href="https://gitee.com/" target="_blank" rel="noopener">https://gitee.com/</a>)<br><img src="/img/314-1.jpg" alt=""></p><p>2.点击右上角的+号，从GitHub导入仓库<br><img src="/img/314-2.jpg" alt=""></p><p>3.输入url导入仓库<br><img src="/img/314-3.jpg" alt=""></p><p>4.这里演示克隆一个文件，将GitHub上的链接输入到码云上<br><img src="/img/314-4.jpg" alt=""><br><img src="/img/314-5.jpg" alt=""></p><p>5.很快就导入到了码云的仓库，点击克隆，复制链接<br><img src="/img/314-6.jpg" alt=""></p><p>6.打开命令提示符 输入git clone 加文件链接 进行克隆<br><img src="/img/314-7.jpg" alt=""><br><img src="/img/314-8.jpg" alt=""></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;基于国内访问GitHub速度很慢，在不扶强的情况下，可以利用码云转接GitHub的项目。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="随笔" scheme="http://nikkie.xyz/categories/%E9%9A%8F%E7%AC%94/"/>
+    
+    
+      <category term="教程" scheme="http://nikkie.xyz/tags/%E6%95%99%E7%A8%8B/"/>
+    
+      <category term="GitHub" scheme="http://nikkie.xyz/tags/GitHub/"/>
+    
+  </entry>
   
   <entry>
     <title>小侄女出生了</title>
