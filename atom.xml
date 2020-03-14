@@ -5,9 +5,9 @@
   <subtitle>无情者伤人,有情者自伤</subtitle>
   <link href="/atom.xml" rel="self"/>
   
-  <link href="http://newblog.ga/"/>
+  <link href="http://nikkie.xyz/"/>
   <updated>2020-03-12T13:40:55.999Z</updated>
-  <id>http://newblog.ga/</id>
+  <id>http://nikkie.xyz/</id>
   
   <author>
     <name>nikkie</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>小侄女出生了</title>
-    <link href="http://newblog.ga/2020/03/12/Little%20niece/"/>
-    <id>http://newblog.ga/2020/03/12/Little%20niece/</id>
+    <link href="http://nikkie.xyz/2020/03/12/Little%20niece/"/>
+    <id>http://nikkie.xyz/2020/03/12/Little%20niece/</id>
     <published>2020-03-12T13:40:00.000Z</published>
     <updated>2020-03-12T13:40:55.999Z</updated>
     
@@ -36,19 +36,19 @@
     </summary>
     
     
-      <category term="随笔" scheme="http://newblog.ga/categories/%E9%9A%8F%E7%AC%94/"/>
+      <category term="随笔" scheme="http://nikkie.xyz/categories/%E9%9A%8F%E7%AC%94/"/>
     
     
-      <category term="成长" scheme="http://newblog.ga/tags/%E6%88%90%E9%95%BF/"/>
+      <category term="成长" scheme="http://nikkie.xyz/tags/%E6%88%90%E9%95%BF/"/>
     
-      <category term="人生" scheme="http://newblog.ga/tags/%E4%BA%BA%E7%94%9F/"/>
+      <category term="人生" scheme="http://nikkie.xyz/tags/%E4%BA%BA%E7%94%9F/"/>
     
   </entry>
   
   <entry>
     <title>约定</title>
-    <link href="http://newblog.ga/2020/03/12/photoPostName/"/>
-    <id>http://newblog.ga/2020/03/12/photoPostName/</id>
+    <link href="http://nikkie.xyz/2020/03/12/photoPostName/"/>
+    <id>http://nikkie.xyz/2020/03/12/photoPostName/</id>
     <published>2020-03-12T02:34:36.428Z</published>
     <updated>2020-03-12T03:15:39.634Z</updated>
     
@@ -65,17 +65,17 @@
     </summary>
     
     
-      <category term="随笔" scheme="http://newblog.ga/categories/%E9%9A%8F%E7%AC%94/"/>
+      <category term="随笔" scheme="http://nikkie.xyz/categories/%E9%9A%8F%E7%AC%94/"/>
     
     
-      <category term="心情" scheme="http://newblog.ga/tags/%E5%BF%83%E6%83%85/"/>
+      <category term="心情" scheme="http://nikkie.xyz/tags/%E5%BF%83%E6%83%85/"/>
     
   </entry>
   
   <entry>
     <title>用cloudflare worker搭建谷歌搜索镜像站点</title>
-    <link href="http://newblog.ga/2020/03/11/cf%20worker/"/>
-    <id>http://newblog.ga/2020/03/11/cf%20worker/</id>
+    <link href="http://nikkie.xyz/2020/03/11/cf%20worker/"/>
+    <id>http://nikkie.xyz/2020/03/11/cf%20worker/</id>
     <published>2020-03-11T06:50:00.000Z</published>
     <updated>2020-03-11T07:09:23.779Z</updated>
     
@@ -88,19 +88,19 @@
     </summary>
     
     
-      <category term="随笔" scheme="http://newblog.ga/categories/%E9%9A%8F%E7%AC%94/"/>
+      <category term="随笔" scheme="http://nikkie.xyz/categories/%E9%9A%8F%E7%AC%94/"/>
     
     
-      <category term="教程" scheme="http://newblog.ga/tags/%E6%95%99%E7%A8%8B/"/>
+      <category term="教程" scheme="http://nikkie.xyz/tags/%E6%95%99%E7%A8%8B/"/>
     
-      <category term="谷歌" scheme="http://newblog.ga/tags/%E8%B0%B7%E6%AD%8C/"/>
+      <category term="谷歌" scheme="http://nikkie.xyz/tags/%E8%B0%B7%E6%AD%8C/"/>
     
   </entry>
   
   <entry>
     <title>第一次搭建博客心得</title>
-    <link href="http://newblog.ga/2020/03/10/Log1/"/>
-    <id>http://newblog.ga/2020/03/10/Log1/</id>
+    <link href="http://nikkie.xyz/2020/03/10/Log1/"/>
+    <id>http://nikkie.xyz/2020/03/10/Log1/</id>
     <published>2020-03-10T14:53:00.000Z</published>
     <updated>2020-03-10T15:11:47.296Z</updated>
     
@@ -113,19 +113,19 @@
     </summary>
     
     
-      <category term="随笔" scheme="http://newblog.ga/categories/%E9%9A%8F%E7%AC%94/"/>
+      <category term="随笔" scheme="http://nikkie.xyz/categories/%E9%9A%8F%E7%AC%94/"/>
     
     
-      <category term="心得" scheme="http://newblog.ga/tags/%E5%BF%83%E5%BE%97/"/>
+      <category term="心得" scheme="http://nikkie.xyz/tags/%E5%BF%83%E5%BE%97/"/>
     
-      <category term="感受" scheme="http://newblog.ga/tags/%E6%84%9F%E5%8F%97/"/>
+      <category term="感受" scheme="http://nikkie.xyz/tags/%E6%84%9F%E5%8F%97/"/>
     
   </entry>
   
   <entry>
     <title>如何免费看奈菲？</title>
-    <link href="http://newblog.ga/2020/03/10/NF/"/>
-    <id>http://newblog.ga/2020/03/10/NF/</id>
+    <link href="http://nikkie.xyz/2020/03/10/NF/"/>
+    <id>http://nikkie.xyz/2020/03/10/NF/</id>
     <published>2020-03-10T10:53:20.000Z</published>
     <updated>2020-03-10T12:04:15.675Z</updated>
     
@@ -143,8 +143,8 @@
   
   <entry>
     <title>hahahhaha</title>
-    <link href="http://newblog.ga/2020/03/08/hahahhaha/"/>
-    <id>http://newblog.ga/2020/03/08/hahahhaha/</id>
+    <link href="http://nikkie.xyz/2020/03/08/hahahhaha/"/>
+    <id>http://nikkie.xyz/2020/03/08/hahahhaha/</id>
     <published>2020-03-08T15:42:01.000Z</published>
     <updated>2020-03-08T15:42:01.295Z</updated>
     
@@ -158,8 +158,8 @@
   
   <entry>
     <title>Test</title>
-    <link href="http://newblog.ga/2020/03/08/Test/"/>
-    <id>http://newblog.ga/2020/03/08/Test/</id>
+    <link href="http://nikkie.xyz/2020/03/08/Test/"/>
+    <id>http://nikkie.xyz/2020/03/08/Test/</id>
     <published>2020-03-08T05:49:48.492Z</published>
     <updated>2020-03-09T08:14:11.107Z</updated>
     
@@ -181,8 +181,8 @@
   
   <entry>
     <title>Hello World</title>
-    <link href="http://newblog.ga/2020/03/08/hello-world/"/>
-    <id>http://newblog.ga/2020/03/08/hello-world/</id>
+    <link href="http://nikkie.xyz/2020/03/08/hello-world/"/>
+    <id>http://nikkie.xyz/2020/03/08/hello-world/</id>
     <published>2020-03-08T03:31:01.279Z</published>
     <updated>2020-03-08T03:31:01.279Z</updated>
     
