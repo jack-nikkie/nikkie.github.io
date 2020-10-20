@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://nikkie.xyz/"/>
-  <updated>2020-10-01T10:13:09.024Z</updated>
+  <updated>2020-10-20T16:52:50.673Z</updated>
   <id>http://nikkie.xyz/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>约定</title>
+    <link href="http://nikkie.xyz/2020/10/21/test/"/>
+    <id>http://nikkie.xyz/2020/10/21/test/</id>
+    <published>2020-10-20T16:51:19.837Z</published>
+    <updated>2020-10-20T16:52:50.673Z</updated>
+    
+    <content type="html"><![CDATA[<p>一无所有的人生如果只能拥有一件宝物的话，希望是与你的约定。<br><img src="/img/312-0.jpg" alt=""></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;一无所有的人生如果只能拥有一件宝物的话，希望是与你的约定。&lt;br&gt;&lt;img src=&quot;/img/312-0.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+      
+    
+    </summary>
+    
+    
+      <category term="随笔" scheme="http://nikkie.xyz/categories/%E9%9A%8F%E7%AC%94/"/>
+    
+    
+      <category term="心情" scheme="http://nikkie.xyz/tags/%E5%BF%83%E6%83%85/"/>
+    
+  </entry>
   
   <entry>
     <title>美好的十月开始了</title>
